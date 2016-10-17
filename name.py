@@ -37,8 +37,8 @@ for song in range(0, len(songlist)):
             # dumb way not to place space in the end of the name
             spacing = ''
         # capitalize lowercase words
-        if len(word) != 0 and word.capitalize() ==
-        word.replace(word[0], word[0].upper(), 1):
+        if (len(word) != 0 and word.capitalize() ==
+            word.replace(word[0], word[0].upper(), 1)):
             songlistNew[song] += word.capitalize() + spacing
         else:
             songlistNew[song] += word + spacing

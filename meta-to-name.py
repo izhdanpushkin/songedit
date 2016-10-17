@@ -20,8 +20,8 @@ for song in range(0, len(songlist)):
     songArtist = file.tag.artist
     songTitle = file.tag.title
 
-    if file.tag is not None and file.tag.artist is not None and
-    file.tag.title is not None:
+    if (file.tag is not None and file.tag.artist is not None and
+	    file.tag.title is not None):
         songName = str(songArtist.encode('utf-8') + ' - ' +
                        songTitle.encode('utf-8') + '.mp3')
         songlistNew[song] = songName
