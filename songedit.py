@@ -131,6 +131,8 @@ def meta_to_name():
 
         if '/' in songlistNew[song]:
             songlistNew[song] = songlistNew[song].replace('/', ' ')
+        while songlistNew[song].count('.mp3') > 1:
+            songlistNew[song] = songlistNew[song][0:-4]
 
         # make changes and print them out
         if songlist[song] != songlistNew[song]:
