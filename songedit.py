@@ -4,12 +4,12 @@ import os
 import eyed3
 
 myPath = './'
-songlist = os.listdir(myPath)
 
 def name():
     '''Clean filenames of all mp3 files in current working directory to be
     somewhat uniform.
     '''
+    songlist = os.listdir(myPath)
     songlistCopy = songlist[:]
     songlistNew = []
 
@@ -59,6 +59,7 @@ def meta():
     '''Create metadata for artist and song name if none present for all mp3
      files in current working directory.
     '''
+    songlist = os.listdir(myPath)
     for song in range(0, len(songlist)):
         if songlist[song].find('.mp3') == -1:  # only change .mp3 files
             continue
@@ -80,27 +81,32 @@ def meta():
         # tags are weird, this seems to work
         try:
             # change metadata of the song if none present
+            changed = False
             if eyed3.load(songlist[song]).tag.title is None:
                 # file.tag.title = songTitle[0:(len(songTitle) - 4)]
                 file.tag.title = songTitle[0:-4]
                 file.tag.save()
+                changed = True
             if eyed3.load(songlist[song]).tag.artist is None:
                 file.tag.artist = songArtist
                 file.tag.save()
-            print songlist[song]
+                changed = True
+            if changed:
+                print 'Added tag for ' + songlist[song]
         except NotImplementedError:
             file.initTag()
             # file.tag.title = u'%s' % songTitle[0:(len(songTitle) - 4)]
             file.tag.title = u'%s' % songTitle[0:-4]
             file.tag.artist = u'%s' % songArtist
             file.tag.save()
-            print songlist[song]
+            print 'Added tag for ' + songlist[song]
         return
 
 def meta_to_name():
     '''Change filenames of all mp3 files in current working directory
     according to their metadata.
     '''
+    songlist = os.listdir(myPath)
     songlistNew = []
     for song in range(0, len(songlist)):
         songlistNew.append('')
@@ -131,19 +137,33 @@ def meta_to_name():
             print('Was: ' + songlist[song] + '\n' + 'Now: ' +
                   songlistNew[song].strip() + '\n')
             os.rename(myPath + songlist[song], myPath + songlistNew[song])
-        return
+    return
 # meta()
 # meta_to_name()
 # name()
 print 'Oi matey!'
-print('Type "n" to clean names, "m" to create metadata or "mn" to rename' +
-    ' accordingly to metadata')
-print('Separate arguments with spaces to run multiple operations at once')
+print 'This program works with all .mp3 files in current directory'
+print 'Possible arguments:'
+print '\'m\'    - create metadata from names'
+print '\'n\'    - clean names'
+print '\'mn\'   - rename from metadata'
+print ('You can separate arguments with spaces to run multiple operations\
+ at once')
 task = raw_input('Type what to do here:\n')
+
+run_name = False
+run_meta = False
+run_meta_to_name = False
 for word in task.split():
     if word.lower() == 'n':
-        name()
+        run_name = True
     elif word.lower() == 'm':
-        meta()
+        run_meta = True
     elif word.lower() == 'mn':
-        meta_to_name()
+        run_meta_to_name = True
+if run_meta_to_name:
+    meta_to_name()
+if run_name:
+    name()
+if run_meta:
+    meta()
