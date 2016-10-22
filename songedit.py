@@ -138,17 +138,16 @@ def meta_to_name():
                   songlistNew[song].strip() + '\n')
             os.rename(myPath + songlist[song], myPath + songlistNew[song])
     return
-# meta()
-# meta_to_name()
-# name()
-print 'Oi matey!'
+
+print 'Oi matey! Here\'s a little howto:'
 print 'This program works with all .mp3 files in current directory'
 print 'Possible arguments:'
 print '\'m\'    - create metadata from names'
 print '\'n\'    - clean names'
-print '\'mn\'   - rename from metadata'
+print '\'mn\'   - rename from metadata\n'
 print ('You can separate arguments with spaces to run multiple operations\
  at once')
+print 'Order with multiple arguments is fixed as mn > n > m\n'
 task = raw_input('Type what to do here:\n')
 
 run_name = False
