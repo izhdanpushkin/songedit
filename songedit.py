@@ -6,6 +6,55 @@ import eyed3
 myPath = './'
 songlist = os.listdir(myPath)
 
+def name():
+    '''Clean filenames of all mp3 files in current working directory to be
+    somewhat uniform.
+    '''
+    songlistCopy = songlist[:]
+    songlistNew = []
+
+    for song in range(0, len(songlist)):
+        songlistNew.append('')
+        counter = 0
+        spacing = ' '
+
+        if songlist[song].find('.mp3') == -1:  # only change .mp3 files
+            continue
+        if (songlistCopy[song].count('-') != 0 and
+            songlistCopy[song].count(' - ') == 0):
+            # make sure artist and song name are separated by whitespaced dash
+            songlistCopy[song] = songlistCopy[song].replace('-', ' - ')
+
+        # replace dumb characters
+        if songlistCopy[song].find('_') != -1:
+            songlistCopy[song] = songlistCopy[song].replace('_', ' ')
+        if songlistCopy[song].find('—') != -1:
+            songlistCopy[song] = songlistCopy[song].replace('—', '-')
+
+        for word in songlistCopy[song].split():
+            counter += 1
+            # remove "lyrics" from the name
+            if 'lyrics' in word.lower() and '.mp3' in word:
+                songlistNew[song] = songlistNew[song].strip() + '.mp3'
+                continue
+            elif 'lyrics' in word.lower():
+                continue
+            # dumb way not to place space in the end of the name
+            if counter == len(songlistCopy[song].split()):
+                spacing = ''
+            # capitalize lowercase words
+            if word == word.lower():
+                songlistNew[song] += word.capitalize() + spacing
+            else:
+                songlistNew[song] += word + spacing
+
+        os.rename(myPath + songlist[song], myPath + songlistNew[song].strip())
+
+        if songlist[song] != songlistNew[song]:
+            print('Was: ' + songlist[song] + '\n' + 'Now: ' +
+                  songlistNew[song].strip() + '\n')
+    return
+
 def meta():
     '''Create metadata for artist and song name if none present for all mp3
      files in current working directory.
@@ -49,8 +98,9 @@ def meta():
         return
 
 def meta_to_name():
-    '''Change filenames of all mp3 files in current working directory according
-    to their metadata'''
+    '''Change filenames of all mp3 files in current working directory
+    according to their metadata.
+    '''
     songlistNew = []
     for song in range(0, len(songlist)):
         songlistNew.append('')
@@ -84,3 +134,16 @@ def meta_to_name():
         return
 # meta()
 # meta_to_name()
+# name()
+print 'Oi matey!'
+print('Type "n" to clean names, "m" to create metadata or "mn" to rename' +
+    ' accordingly to metadata')
+print('Separate arguments with spaces to run multiple operations at once')
+task = raw_input('Type what to do here:\n')
+for word in task.split():
+    if word.lower() == 'n':
+        name()
+    elif word.lower() == 'm':
+        meta()
+    elif word.lower() == 'mn':
+        meta_to_name()
