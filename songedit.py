@@ -100,7 +100,7 @@ def meta():
             file.tag.artist = u'%s' % songArtist
             file.tag.save()
             print 'Added tag for ' + songlist[song]
-        return
+    return
 
 def meta_to_name():
     '''Change filenames of all mp3 files in current working directory
